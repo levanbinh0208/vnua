@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm người dùng</title>
+</head>
+<body>
+<h2>Form thêm người dùng</h2>
+<form id="userForm">
+    <label for="hoTen">Họ tên:</label>
+    <input type="text" id="hoTen" name="hoTen" required><br><br>
+
+    <label for="maCanBo">Mã cán bộ:</label>
+    <input type="text" id="maCanBo" name="maCanBo" required><br><br>
+
+    <label for="chucVu">Chức vụ:</label>
+    <input type="text" id="chucVu" name="chucVu"><br><br>
+
+    <label for="donVi">Đơn vị:</label>
+    <input type="text" id="donVi" name="donVi"><br><br>
+
+    <button type="submit">Gửi</button>
+</form>
+
+<script>
+    document.getElementById("userForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const data = {
+            hoTen: document.getElementById("hoTen").value,
+            maCanBo: document.getElementById("maCanBo").value,
+            chucVu: document.getElementById("chucVu").value,
+            donVi: document.getElementById("donVi").value
+        };
+
+        fetch("http://localhost:8080/api/user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                alert("Tạo người dùng thành công với ID: " + result.id);
+            })
+            .catch(error => {
+                alert("Lỗi khi gửi dữ liệu: " + error);
+            });
+    });
+</script>
+</body>
+</html>
