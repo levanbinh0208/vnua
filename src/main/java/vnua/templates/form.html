@@ -22,6 +22,9 @@
     <button type="submit">Gửi</button>
 </form>
 
+<h2>Danh sách người dùng</h2>
+<ul id="userList"></ul>
+
 <script>
     document.getElementById("userForm").addEventListener("submit", function(e) {
         e.preventDefault();
@@ -42,11 +45,29 @@
             .then(response => response.json())
             .then(result => {
                 alert("Tạo người dùng thành công với ID: " + result.id);
+                document.getElementById("userForm").reset();
+                loadUsers(); // gọi lại load danh sách ngay
             })
             .catch(error => {
                 alert("Lỗi khi gửi dữ liệu: " + error);
             });
     });
+
+    function loadUsers() {
+        fetch("/api/user")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("userList");
+                list.innerHTML = "";
+                data.forEach(u => {
+                    const li = document.createElement("li");
+                    li.textContent = `${u.id} - ${u.hoTen} (${u.maCanBo})`;
+                    list.appendChild(li);
+                });
+            });
+    }
+
+    window.onload = loadUsers;
 </script>
 </body>
 </html>

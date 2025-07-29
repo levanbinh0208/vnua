@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+</head>
+<body>
+<h2>Đăng nhập</h2>
+<form id="loginForm">
+    <label for="username">Tên đăng nhập:</label>
+    <input type="text" id="username" required><br><br>
+
+    <label for="password">Mật khẩu:</label>
+    <input type="password" id="password" required><br><br>
+
+    <button type="submit">Đăng nhập</button>
+</form>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const data = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+
+        fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+            .then(res => {
+                if (res.status === 200) return res.text();
+                else throw new Error("Sai tên đăng nhập hoặc mật khẩu");
+            })
+            .then(msg => {
+                alert(msg);
+                window.location.href = "/form.html";
+            })
+            .catch(err => alert(err.message));
+    });
+</script>
+</body>
+</html>
